@@ -1,0 +1,19 @@
+FROM ubuntu:16.04
+
+RUN apt-get update
+RUN apt-get install -y nginx
+
+RUN export DEBIAN_FRONTEND=noninteractive && \
+apt-get -q -y install mysql-server
+
+RUN apt-get install -y php-fpm php-mysql
+
+
+COPY config/php.ini /etc/php/7.0/fpm/php.ini
+
+RUN apt-get install -y vim
+RUN mkdir /home/test_nlpf
+COPY ./ /home/test_nlpf/
+COPY config/default /etc/nginx/sites-available/default
+
+RUN service nginx restart
