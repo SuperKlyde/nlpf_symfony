@@ -31,7 +31,7 @@ class DefaultController extends Controller
             return new JsonResponse("Did not created DB");
         $response = $output;
 
-        if (($toto = shell_exec("php console_bis.php doctrine:schema:update --dump-sql --force")) == null)
+        if (($output = shell_exec("php console_bis.php doctrine:schema:update --dump-sql --force")) == null)
             return new JsonResponse("Did not created tables");
 
         $response .= " " . $output;

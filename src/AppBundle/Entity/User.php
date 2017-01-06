@@ -9,6 +9,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity()
@@ -36,9 +37,41 @@ class User
     /**
      * @ORM\Column(type="string")
      */
+    protected $password;
+
+    /**
+     * @ORM\Column(type="string", unique=true)
+     */
     protected $email;
 
-    public function getId()
+    /**
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="owner", cascade={"ALL"})
+     */
+    protected $projects;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Invest", mappedBy="investor", cascade={"ALL"})
+     */
+    protected $investments;
+
+  /**
+   * User constructor.
+   * @param $firstname
+   * @param $lastname
+   * @param $password
+   * @param $email
+   */
+  public function __construct($firstname, $lastname, $password, $email)
+  {
+    $this->firstname = $firstname;
+    $this->lastname = $lastname;
+    $this->password = $password;
+    $this->email = $email;
+    $this->investments = new ArrayCollection();
+    $this->projects = new ArrayCollection();
+  }
+
+  public function getId()
     {
       return $this->id;
     }
@@ -63,6 +96,22 @@ class User
       return $this->lastname;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPassword()
+    {
+      return $this->password;
+    }
+
+    /**
+     * @param mixed $password
+     */
+    public function setPassword($password)
+    {
+      $this->password = $password;
+    }
+
     public function setLastname($lastname)
     {
       $this->lastname = $lastname;
@@ -77,4 +126,43 @@ class User
     {
       $this->email = $email;
     }
+
+    public function addAttribute($name, $description)
+    {
+      $this->projects[$name] = new Project($this, $name, $description);
+    }
+
+  /**
+   * @return mixed
+   */
+  public function getProjects()
+  {
+    return $this->projects;
+  }
+
+  /**
+   * @param mixed $projects
+   */
+  public function setProjects($projects)
+  {
+    $this->projects = $projects;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getInvestments()
+  {
+    return $this->investments;
+  }
+
+  /**
+   * @param mixed $investments
+   */
+  public function setInvestments($investments)
+  {
+    $this->investments = $investments;
+  }
+
+
 }

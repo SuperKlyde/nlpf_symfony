@@ -2,10 +2,14 @@ app:
     resource: "@AppBundle/Controller/"
     type:     annotation
 
-places:
+projects:
     type:     rest
-    resource: AppBundle\Controller\PlaceController
+    resource: AppBundle\Controller\ProjectController
 
 users:
     type:     rest
     resource: AppBundle\Controller\UserController
+
+conterparts:
+    type:     rest
+    resource: AppBundle\Controller\ConterpartController
