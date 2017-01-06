@@ -65,6 +65,7 @@ class Conterpart
     $this->description = $description;
     $this->value = $value;
     $this->projects = new ArrayCollection();
+    $this->investments= new ArrayCollection();
   }
 
   /**

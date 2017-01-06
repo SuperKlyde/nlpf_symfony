@@ -46,4 +46,22 @@ class ConterpartController extends Controller
 
     return new JsonResponse($formatted);
   }
+
+  /**
+   * @Rest\View()
+   * @Rest\Post("/conterpart/create")
+   */
+  public function createConterpart(Request $request) {
+    $name = $request->get("name");
+    $description = $request->get("description");
+    $value = $request->get("value");
+
+    $conterpart = new Conterpart($name, $description, $value);
+
+    $em = $this->get('doctrine.orm.entity_manager');
+    $em->persist($conterpart);
+    $em->flush();
+
+    return $conterpart;
+  }
 }
