@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Conterpart;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -129,5 +130,37 @@ class ProjectController extends Controller
     ];
 
     return new JsonResponse($formatted);
+  }
+
+  /**
+   * @Rest\View()
+   * @Rest\Post("/project/addconterpart")
+   */
+  public function AddConterpartToProject(Request $request) {
+    $project = $this->get('doctrine.orm.entity_manager')
+      ->getRepository('AppBundle:Project')
+      ->find($request->get('projectId'));
+    /* @var $project Project */
+
+    if (empty($project)) {
+      return new JsonResponse(['message' => 'Project not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    $conterpart = $this->get('doctrine.orm.entity_manager')
+      ->getRepository('AppBundle:Conterpart')
+      ->find($request->get('conterpartId'));
+    /* @var $conterpart Conterpart */
+
+    if (empty($conterpart)) {
+      return new JsonResponse(['message' => 'Conterpart not found'], Response::HTTP_NOT_FOUND);
+    }
+
+    $project->addConterpart($conterpart);
+
+    $em = $this->get('doctrine.orm.entity_manager');
+    $em->persist($project);
+    $em->flush();
+
+    return new JsonResponse("true", Response::HTTP_ACCEPTED);
   }
 }
