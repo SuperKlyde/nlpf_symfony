@@ -27,8 +27,14 @@ class DefaultController extends Controller
      * @Get("/createdb")
      */
     public function createDb(Request $request) {
-        shell_exec("php bin/console doctrine:database:create");
-        shell_exec("php bin/console doctrine:schema:update --dump-sql --force");
-        return new JsonResponse("Created DB");
+        if (($output = shell_exec("php console_bis.php doctrine:database:create")) == null)
+            return new JsonResponse("Did not created DB");
+        $response = $output;
+
+        if (($toto = shell_exec("php console_bis.php doctrine:schema:update --dump-sql --force")) == null)
+            return new JsonResponse("Did not created tables");
+
+        $response .= " " . $output;
+        return new JsonResponse($response);
     }
 }
