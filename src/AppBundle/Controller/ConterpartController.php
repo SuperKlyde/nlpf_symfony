@@ -27,7 +27,7 @@ class ConterpartController extends Controller
   /**
    * @Rest\Get("/conterpart")
    */
-  public function getUsersAction(Request $request)
+  public function getConterpartAction(Request $request)
   {
     $conterparts = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:Conterpart')

@@ -31,12 +31,12 @@ class Invest
   protected $investor;
 
   /**
-   * @ORM\ManyToOne(targetEntity="User", inversedBy="investments")
+   * @ORM\ManyToOne(targetEntity="Project", inversedBy="investments")
    */
   protected $project;
 
   /**
-   * @ORM\ManyToOne(targetEntity="User", inversedBy="investments")
+   * @ORM\ManyToOne(targetEntity="Conterpart", inversedBy="investments")
    */
   protected $conterpart;
 

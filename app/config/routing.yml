@@ -13,3 +13,7 @@ users:
 conterparts:
     type:     rest
     resource: AppBundle\Controller\ConterpartController
+
+invests:
+    type:     rest
+    resource: AppBundle\Controller\InvestController
