@@ -1,0 +1,21 @@
+{
+  "name": "nlpf_symfony",
+  "homepage": "https://github.com/SuperKlyde/nlpf_symfony",
+  "authors": [
+    "Simon MACE <simon.mace@epita.fr>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "web",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.1"
+  }
+}
