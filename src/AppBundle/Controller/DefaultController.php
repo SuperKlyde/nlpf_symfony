@@ -22,19 +22,4 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
     }
-
-    /**
-     * @Get("/createdb")
-     */
-    public function createDb(Request $request) {
-        if (($output = shell_exec("php console_bis.php doctrine:database:create")) == null)
-            return new JsonResponse("Did not created DB");
-        $response = $output;
-
-        if (($output = shell_exec("php console_bis.php doctrine:schema:update --dump-sql --force")) == null)
-            return new JsonResponse("Did not created tables");
-
-        $response .= " " . $output;
-        return new JsonResponse($response);
-    }
 }
