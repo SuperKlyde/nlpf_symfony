@@ -1,11 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block head %}
-
-{% endblock %}
-
-{% block body %}
-    {% verbatim %}
-        {{ 'This is angularJS code!' }}
-    {% endverbatim %}
-{% endblock %}
+ {% block body %}
+    <!-- Page Content-->
+    <div class="container">
+      <!-- Page Header-->
+      <div class="row">
+        <div class="col-lg-12">
+          <h1 class="page-header">Bienvenue sur le site Project Tagada<small>Accueil du site</small></h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <ul id="slides" class="swiper-wrapper">
+            <!-- each row in projects
+            .col-md-4
+                a(href='/project/' + row.ID)
+                    h2.modal-title
+                    p Current investment : €/mois
+                img(src="http://placehold.it/700x400", class="img-responsive")
+                p(style='word-wrap:break-word; width:270px; white-space:pre-wrap', ;='')
+            -->
+          </ul>
+        </div>
+      </div>
+      <!-- /.row-->
+    </div>
+ {% endblock %}
