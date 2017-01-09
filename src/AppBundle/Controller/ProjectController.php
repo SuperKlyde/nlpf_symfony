@@ -52,7 +52,7 @@ class ProjectController extends Controller
 
 
   /**
-   * @Rest\Get("/projects/{id}")
+   * @Rest\Get("/projects/{id}", name="_projects")
    */
   public function getProjectAction(Request $request)
   {
