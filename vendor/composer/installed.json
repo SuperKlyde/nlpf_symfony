@@ -2327,5 +2327,64 @@
         "keywords": [
             "rest"
         ]
+    },
+    {
+        "name": "nelmio/cors-bundle",
+        "version": "1.5.0",
+        "version_normalized": "1.5.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/nelmio/NelmioCorsBundle.git",
+            "reference": "58c2ae30bc52f61492bc3639f04ab322cb1d98e9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/nelmio/NelmioCorsBundle/zipball/58c2ae30bc52f61492bc3639f04ab322cb1d98e9",
+            "reference": "58c2ae30bc52f61492bc3639f04ab322cb1d98e9",
+            "shasum": ""
+        },
+        "require": {
+            "symfony/framework-bundle": "^2.7 || ^3.0"
+        },
+        "require-dev": {
+            "matthiasnoback/symfony-dependency-injection-test": "^0.7.6",
+            "mockery/mockery": "0.9.*"
+        },
+        "time": "2016-12-30T18:10:59+00:00",
+        "type": "symfony-bundle",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.5.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Nelmio\\CorsBundle\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nelmio",
+                "homepage": "http://nelm.io"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://github.com/nelmio/NelmioCorsBundle/contributors"
+            }
+        ],
+        "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony2 application",
+        "keywords": [
+            "api",
+            "cors",
+            "crossdomain"
+        ]
     }
 ]
