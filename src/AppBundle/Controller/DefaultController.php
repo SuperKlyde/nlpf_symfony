@@ -16,12 +16,12 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /*$projects = $this->get('doctrine.orm.entity_manager')
+        $projects = $this->get('doctrine.orm.entity_manager')
           ->getRepository('AppBundle:Project')
-          ->findAll();*/
+          ->findAll();
         /* @var $projects Project[] */
 
-        /*$formatted = [];
+        $formatted = [];
         foreach ($projects as $project) {
             $formatted[] = [
               'id' => $project->getId(),
@@ -35,13 +35,12 @@ class DefaultController extends Controller
 
         // Exécution de la requête
         // replace this example code with whatever you need
-*/
-        /*return $this->render('default/index.html.twig', array(
+
+        return $this->render('default/index.html.twig', array(
           'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
           'projectlist' => $formatted,
-        ));*/
+        ));
 
-       return $this->render('ngapp/views/accueil.html');
     }
 
     /**
