@@ -28,9 +28,28 @@ App.controller("SessionController", function($scope, $http, $location, $route) {
      */
     $scope.userConnect = function (user) {
         if (user.email != "" && user.password != "") {
-            $http.post('http://127.0.0.1:8000/api/user/login', user).success(function(account){
+            var newuser = [{"email" : user.email, "password" : user.password }]
+            ;
+            var req = {
+                method: 'POST',
+                url: 'http://127.0.0.1:8000/api/user/login',
+                headers: {
+                    'Content-Type': "application/x-www-form-urlencoded"
+                },
+                data: { email: user.email, password: user.password },
+                transformRequest: function(obj) {
+                    var str = [];
+                    for(var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(JSON.stringify(obj[p]) ) );
+                    return str.join("&");
+                }
+            };
+
+            $http(req).success(function(account){
+                console.log(account);
+                console.log(typeof(account));
                 $scope.loginSucessMessage = "Logged";
-                if (account !== undefined && user.password == account.password) {
+                if (account.message !== undefined) {
                     window.localStorage.setItem("user", JSON.stringify(account));
                     $scope.userConnected = {connected: window.localStorage.getItem("user") !== null ? true : false};
                     $scope.notConnected = {connected: !$scope.userConnected.connected};

@@ -8,6 +8,7 @@ var MyApp = {};
 
 var App = angular.module('MyApp', ['ngRoute']);
 
+
 App.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when('/', {
         controller: homeController,

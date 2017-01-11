@@ -9,11 +9,21 @@
     <link href="css/3-col-portfolio.css" rel="stylesheet">
 
     <!-- Navigation-->
-    <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+    <nav role="navigation" class="navbar navbar-inverse navbar-fixed-top" ng-controller="SessionController">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display-->
             <div class="navbar-header">
-                <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#" class="navbar-brand">Project Tagada : project founding</a>
+                <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button><a href="#" class="navbar-brand">Project Tagada : project founding</a>
+
             </div>
             <!-- Collect the nav links, forms, and other content for toggling-->
             <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
@@ -23,6 +33,14 @@
                     <li><a ng-href="#/createproject">Create Project</a></li>
                     <li><a ng-href="#/best">Best Projects</a></li>
                     <li><a ng-href="#/login">Log In</a></li>
+                </ul>
+                <ul ng-show="userConnected.connected == true" class="nav navbar-nav navbar-right">
+                    <li>
+                        <a ng-href="#/myProject"> {{ userData.email }}</a>
+                    </li>
+                    <li>
+                        <a ng-click="logout()">Se déconnecter</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse-->
