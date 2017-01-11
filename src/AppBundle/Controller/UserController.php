@@ -95,23 +95,30 @@ class UserController extends Controller
   }
 
   /**
-   * @Rest\View()
    * @Rest\Post("api/user/login")
    */
   public function login(Request $request) {
-    $body = $request->get('user');
-    echo $body->get('email');
+    $email = str_replace("\"", "", $request->get('email'));
+    $pwd = str_replace("\"", "", $request->get('password'));
+
     $user = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:User')
-      ->findOneByEmail($request->get('email'));
+      ->findOneByEmail($email);
     /* @var $user User */
 
     if (empty($user)) {
-      return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+      return new JsonResponse(null);
     }
-    if ($user->getPassword() != $request->get('password'))
-      return new JsonResponse("false ");
+    if ($user->getPassword() != $pwd)
+      return new JsonResponse(null);
 
-    return new JsonResponse(['message' => 'true']);
+    $formatted = [
+      'id' => $user->getId(),
+      'firstname' => $user->getFirstname(),
+      'lastname' => $user->getLastname(),
+      'email' => $user->getEmail(),
+      'password' => $user->getPassword(),
+    ];
+    return new JsonResponse(['message' => $formatted]);
   }
 }
