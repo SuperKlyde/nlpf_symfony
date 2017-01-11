@@ -96,9 +96,11 @@ class UserController extends Controller
 
   /**
    * @Rest\View()
-   * @Rest\Post("/users/login")
+   * @Rest\Post("api/user/login")
    */
   public function login(Request $request) {
+    $body = $request->get('user');
+    echo $body->get('email');
     $user = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:User')
       ->findOneByEmail($request->get('email'));
@@ -110,6 +112,6 @@ class UserController extends Controller
     if ($user->getPassword() != $request->get('password'))
       return new JsonResponse("false ");
 
-    return new JsonResponse("true");
+    return new JsonResponse(['message' => 'true']);
   }
 }

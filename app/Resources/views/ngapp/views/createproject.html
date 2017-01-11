@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{titre}}</h1>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-lg-12 alert alert-danger form-control errorMessage" ng-show="projectError"> {{ projectErrorMessage }}</div>
+</div>
+
+<!-- Projects Row -->
+<div class="row">
+
+    <div class="col-md-6 portfolio-item">
+        <form class = "form-signin" novalidate name="projectForm">
+            <label>Nom du projet</label>
+            <input type = "text" class = "form-control" name = "projectName" placeholder = "Nom du projet"
+                   ng-model="project.name" required="required" min="1" required autofocus></br>
+            <span style="color:red" ng-show="projectForm.projectName.$dirty && projectForm.projectName.$invalid">
+                <span ng-show="projectForm.projectName.$error.required">Le nom de projet est requis.</span>
+            </span>
+            <br>
+            <label>Description</label>
+            <textarea id="projectDescription" ng-model="project.projectDescription" class = "form-control" rows="8"></textarea>
+            <textarea id="hiddenProjectDescription" class = "form-control" ng-bind="project.projectDescription" ng-model="project.description" name = "projectDescription" required="required"
+                      ng-minlength="200" ng-hide="true"></textarea>
+            <span style="color:red" ng-show="projectForm.projectDescription.$dirty && projectForm.projectDescription.$invalid">
+                <span ng-show="projectForm.projectDescription.$error.required">La description du projet est requise.</span>
+                <span ng-show="projectForm.projectDescription.$error.minlength">La description doit contenir au moins 140 caractères.</span>
+            </span>
+            <br>
+            <label>Auteur</label>
+            <input type = "text" class = "form-control" name = "author" placeholder = "Prenom Nom"
+                   ng-model="project.author" ng-init="project.author = initAuthor()" required="required" min="1" required autofocus>
+            <span style="color:red" ng-show="projectForm.author.$dirty && projectForm.author.$invalid">
+                <span ng-show="projectForm.author.$error.required">Le nom de l'auteur du projet est requis.</span>
+            </span>
+            <br>
+            <label>Contact</label>
+            <input type = "email" class = "form-control" name = "projectEmail" placeholder = "email"
+                   ng-model="project.contact" ng-init="project.contact = initContact()" required="required" min="1" required>
+            <span style="color:red" ng-show="projectForm.projectEmail.$dirty && projectForm.projectEmail.$invalid">
+                <span ng-show="projectForm.projectEmail.$error.required">L'adresse mail est requise.</span>
+                <span ng-show="projectForm.projectEmail.$error.email">Adresse email invalide.</span>
+            </span>
+            <br>
+            <button class = "btn btn-lg btn-primary btn-block"
+                    ng-disabled="projectForm.projectName.$dirty && projectForm.projectName.$invalid ||
+                        projectForm.projectDescription.$dirty && projectForm.projectDescription.$invalid ||
+                        projectForm.author.$dirty && projectForm.author.$invalid ||
+                        projectForm.projectEmail.$dirty && projectForm.projectEmail.$invalid ||
+                        !project.contact  || !project.author || !project.description || !project.name"
+                    ng-click="createProject(project)"
+                    name = "projectSave">Créer le projet</button>
+        </form>
+
+    </div>
+</div>

@@ -73,3 +73,11 @@ fos_rest:
         include_format: false
     view:
         view_response_listener: true
+
+nelmio_cors:
+  paths:
+    '^/api':
+      allow_origin: ['*']
+      allow_headers: ['x-requested-with']
+      allow_methods: ['POST', 'PUT', 'GET', 'DELETE', 'OPTIONS']
+      max_age: 3600

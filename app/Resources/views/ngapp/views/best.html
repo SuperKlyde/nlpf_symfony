@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">{{titre}}</h1>
+    </div>
+</div>
+
+<div class="row"   >
+    <div class="col-md-4 portfolio-item" ng-repeat="project in projects | orderBy : myFilter ">
+        <div class="col-lg-6">
+            <h3>
+                <a ng-href="#/project/{{project.id}}">{{ project.name }}</a>
+            </h3>
+        </div>
+        <div class="col-lg-6">
+            <a ng-href="#/project/{{project.id}}">
+                <img class="img-responsive" src="http://placehold.it/700x400" alt="">
+            </a>
+        </div>
+        <div class="col-lg-12 margeTop">
+            <p>Gain : {{ project.current }} € / mois</p>
+        </div>
+        <div class="col-lg-12">
+            <p>Créé le : {{ project.created.date | date : 'longDate' }}</p>
+        </div>
+        <div class="rightText">
+            <a ng-href="#/project/{{ project.id }}" class="whiteText rightText">
+                <button class="btn btn-primary" type="button">Participer !</button>
+            </a>
+        </div>
+    </div>
+</div>

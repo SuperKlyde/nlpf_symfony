@@ -27,7 +27,7 @@ class ProjectController extends Controller
 {
 
   /**
-   * @Rest\Get("/projects")
+   * @Rest\Get("/api/projects")
    */
   public function getProjectsAction(Request $request)
   {
@@ -44,6 +44,7 @@ class ProjectController extends Controller
         'owner' => $project->getOwner(),
         'created' => $project->getCreated(),
         'conterparts' => $project->getConterparts(),
+        'current' => $project->getCurrent(),
       ];
     }
 
@@ -106,7 +107,7 @@ class ProjectController extends Controller
   }
 
   /**
-   * @Rest\Post("/project/create")
+   * @Rest\Post("api/project/create")
    */
   public function createProject(Request $request) {
     $name = $request->get('name');

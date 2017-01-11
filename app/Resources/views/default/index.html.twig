@@ -9,22 +9,42 @@
           <h1 class="page-header">Bienvenue sur le site Project Tagada<small>Accueil du site</small></h1>
         </div>
       </div>
-        <div class="row">
-        <div class="col-lg-12">
-          <ul id="slides" class="swiper-wrapper">
-             {% for project in projectlist%}
-            <li>
-                <a href="{{ path('_projects', {'id': project.id}) }}">
-                    {{ project.name }}
-                </a>
-                par {{ project.owner.firstname }},
-                le {{ project.created|date('d/m/Y') }}
-            </li>
-             {% endfor %}
-          </ul>
-        </div>
-      </div>
     </div>
-    {% endblock %}
+{% endblock %}
 
+{% block content %}
+<div class="container">
+    <div class="row">
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <tbody>
+                    <tr>
+                        <td><strong>ID</strong></td>
+                        <td><strong>Title</strong></td>
+                        <td><strong>Owner</strong></td>
+                        <td><strong>Creation Date</strong></td>
+                        <td><strong>Description</strong></td>
+                    </tr>
+                    {% for project in projectlist %}
+                        {% set author=project.owner.firstname%}
+                        {%if author ==''%}
+                            {%set author='(anonymous)'%}
+                        {%endif%}
+                        <tr>
+                            <td><a href="{{path('_projects', {'id':project.id})}}">{{project.id}}</a></td>
+                            <td><a href="{{path('_projects', {'id':project.id})}}">{{project.name}}</a></td>
+                            <td>{{author}}</td>
+                            <td>{{project.created|date('Y-m-d')}}</td>
+                            <td>{{project.description}}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
 
