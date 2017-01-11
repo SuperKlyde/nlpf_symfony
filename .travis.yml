@@ -8,6 +8,9 @@ before_script:
 
 script: phpunit
 
+env:
+  - SYMFONY_ENV=prod
+
 notifications:
   email:
     - hugo.capes@epita.fr
