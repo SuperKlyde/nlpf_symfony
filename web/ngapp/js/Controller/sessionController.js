@@ -74,20 +74,44 @@ App.controller("SessionController", function($scope, $http, $location, $route) {
      * @param user containing all data to a user account
      */
     $scope.submitUser = function (user) {
-        $http.post('/signup/', user).success(function(account){
-            if (account !== undefined) {
-                window.localStorage.setItem("user", JSON.stringify(account));
-                $scope.userConnected = {connected: window.localStorage.getItem("user") !== null ? true : false};
-                $scope.notConnected = {connected: !$scope.userConnected.connected};
-                window.location.href = "#/";
-                window.location.reload();
-            }
-            else {
-                $scope.createUserErrorMessage = "L'adresse mail est deja utilisee !"
-                $scope.createUserError = true;
-            }
+        if (user.password === user.confirm_password) {
+            var req = {
+                method: 'POST',
+                url: 'http://127.0.0.1:8000/api/users/createaccount',
+                headers: {
+                    'Content-Type': "application/x-www-form-urlencoded"
+                },
+                data: {
+                    email: user.email,
+                    password: user.password,
+                    firstname: user.firstname,
+                    lastname: user.lastname
+                },
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(JSON.stringify(obj[p])));
+                    return str.join("&");
+                }
+            };
+            $http(req).success(function (account) {
+                if (account.message !== undefined) {
+                    window.localStorage.setItem("user", JSON.stringify(account));
+                    $scope.userConnected = {connected: window.localStorage.getItem("user") !== null ? true : false};
+                    $scope.notConnected = {connected: !$scope.userConnected.connected};
+                    window.location.href = "#/";
+                    window.location.reload();
+                }
+                else {
+                    $scope.createUserErrorMessage = "L'adresse mail est deja utilisee !"
+                    $scope.createUserError = true;
+                }
 
-        });
+            });
+        } else {
+            $scope.loginErrorMessage = "Passwords must match !";
+            $scope.loginError = true;
+        }
     };
 
     /**

@@ -32,7 +32,14 @@
                     <li><a ng-href="#/createaccount">Create account</a></li>
                     <li><a ng-href="#/createproject">Create Project</a></li>
                     <li><a ng-href="#/best">Best Projects</a></li>
-                    <li><a ng-href="#/login">Log In</a></li>
+                </ul>
+                <ul ng-show="notConnected.connected == true" class="nav navbar-nav navbar-right">
+                    <li>
+                        <a ng-href="#/signup">Sign Up</a>
+                    </li>
+                    <li>
+                        <a ng-href="#/login">Log In</a>
+                    </li>
                 </ul>
                 <ul ng-show="userConnected.connected == true" class="nav navbar-nav navbar-right">
                     <li>

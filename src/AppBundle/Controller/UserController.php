@@ -77,13 +77,13 @@ class UserController extends Controller
 
   /**
    * @Rest\View()
-   * @Rest\Post("/users/createaccount")
+   * @Rest\Post("api/users/createaccount")
    */
   public function createAccount(Request $request) {
-    $firstname = $request->get('firstname');
-    $lastname = $request->get('lastname');
-    $password = $request->get('password');
-    $email = $request->get('email');
+    $firstname = str_replace("\"", "", $request->get('firstname'));
+    $lastname = str_replace("\"", "", $request->get('lastname'));
+    $email = str_replace("\"", "", $request->get('email'));
+    $password = str_replace("\"", "", $request->get('password'));
 
     $user = new User($firstname, $lastname, $password, $email);
 
@@ -91,7 +91,7 @@ class UserController extends Controller
     $em->persist($user);
     $em->flush();
 
-    return $user;
+    return new JsonResponse(['message' => $user]);
   }
 
   /**
