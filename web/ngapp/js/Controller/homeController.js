@@ -10,7 +10,7 @@
  */
 var homeController = function($scope, $http, $sce) {
     $scope.myFilter = '-created';
-    $scope.titre = "Accueil";
+    $scope.titre = "Home";
 
     /**
      * Function that will fetch all the project list and send it to the view

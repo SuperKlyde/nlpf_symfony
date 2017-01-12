@@ -43,6 +43,11 @@ App.config(['$routeProvider', function ($routeProvider) {
         templateUrl : "/views/project.html"
     });
 
+    $routeProvider.when('/project/:projectId/edit', {
+        controller: EditProjectController,
+        templateUrl : "/views/editProject.html"
+    });
+
     $routeProvider.when('/participate/:counterpartId', {
         controller: ParticipateController,
         templateUrl : "/views/participate.html",

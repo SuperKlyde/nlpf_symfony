@@ -82,6 +82,32 @@ class ProjectController extends Controller
     return new JsonResponse(['message' => $formatted]);
   }
 
+  /**
+   * @Rest\Get("/api/project/{id}/owner/{owner_id}")
+   */
+  public function getProjectWithOwnerAction(Request $request)
+  {
+    $em = $this->get('doctrine.orm.entity_manager');
+    $repository = $em->getRepository('AppBundle:User');
+    $query = $repository->createQueryBuilder('u')
+      ->innerJoin('u.project', 'g')
+      ->where('g.id = :group_id')
+      ->setParameter('group_id', $request->get('id'))
+      ->getQuery()->getResult();
+
+    if (empty($query)) {
+      return new JsonResponse(null, Response::HTTP_NOT_MODIFIED);
+    }
+
+    foreach ($query as $user) {
+      if (empty($user) || $user->getOwner()->getId() != $request->get('owner_id')) {
+        return new JsonResponse(null, Response::HTTP_NOT_MODIFIED);
+      }
+    }
+
+    return new JsonResponse(['message' => "true"]);
+  }
+
    /**
    * @Rest\Get("/api/projectowner/{id}")
    */

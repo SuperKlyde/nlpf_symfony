@@ -5,7 +5,6 @@
 'use strict';
 
 var createProjectController = function($scope, $location, $http, requireAuth) {
-    $scope.title = "Mon project";
     var userData = JSON.parse(window.localStorage.getItem("user"));
     var counterpartList = [];
 
