@@ -9,14 +9,14 @@ var createProjectController = function($scope, $location, $http, requireAuth) {
     var userData = JSON.parse(window.localStorage.getItem("user"));
     var counterpartList = [];
 
-    //initTextEditor($scope);
+    initTextEditor($scope);
 
     /**
      * Check if the user id logged. Redirect to the login page
      */
     if (requireAuth && window.localStorage.getItem("user") == null) {
         // User isn’t authenticated
-        $location.path("/signin");
+        $location.path("/login");
     }
 
     /**
@@ -40,20 +40,81 @@ var createProjectController = function($scope, $location, $http, requireAuth) {
      * @param project
      */
     $scope.createProject = function (project) {
-        project.account_id = userData.id;
+        console.log(userData);
         if (project.description.length < 140) {
             $scope.projectError=true;
             $scope.projectErrorMessage = "La description doit avoir au minimum 140 caracteres";
         }
         else {
             if (counterpartList.length > 0){
-                $http.post('/projectAdd/', project).success(function(projectId){
-                    if (projectId !== undefined) {
-                        $http.post('/projectAddCounterparts/'+projectId.id+'/', counterpartList).success(function(result) {
-                            $location.path('/');
-                        });
+                var req = {
+                    method: 'POST',
+                    url: 'http://127.0.0.1:8000/api/project/create',
+                    headers: {
+                        'Content-Type': "application/x-www-form-urlencoded"
+                    },
+                    data: {
+                        name: project.name,
+                        description: project.description,
+                        userId: userData.id
+                    },
+                    transformRequest: function (obj) {
+                        var str = [];
+                        for (var p in obj)
+                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(JSON.stringify(obj[p])));
+                        return str.join("&");
+                    }
+                };
+                $http(req).success(function(projectId){
+                    if (projectId.message !== undefined) {
+                        counterpartList.forEach(function(counterpart) {
+                            console.log(counterpart);
+                            var req2 = {
+                                method: 'POST',
+                                url: 'http://127.0.0.1:8000/api/conterpart/create',
+                                headers: {
+                                    'Content-Type': "application/x-www-form-urlencoded"
+                                },
+                                data: {
+                                    name: counterpart.name,
+                                    description: counterpart.description,
+                                    value: counterpart.value,
+                                    projectId : projectId.message.id
+                                },
+                                transformRequest: function (obj) {
+                                    var str = [];
+                                    for (var p in obj)
+                                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(JSON.stringify(obj[p])));
+                                    return str.join("&");
+                                }
+                            };
+                            $http(req2).success(function(result) {
+                                console.log(projectId.message);
+                                console.log(result.message);
+                                var req3 = {
+                                    method: 'POST',
+                                    url: 'http://127.0.0.1:8000/api/project/addconterpart',
+                                    headers: {
+                                        'Content-Type': "application/x-www-form-urlencoded"
+                                    },
+                                    data: {
+                                        projectId: projectId.message.id,
+                                        conterpartId: result.message.id
+                                    },
+                                    transformRequest: function (obj) {
+                                        var str = [];
+                                        for (var p in obj)
+                                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(JSON.stringify(obj[p])));
+                                        return str.join("&");
+                                    }
+                                };
+                                $http(req3).success(function(result) {
+                                });
+                            });
+                        })
                     }
                 });
+                $location.path('/');
             }
             else {
                 $scope.projectError = true;

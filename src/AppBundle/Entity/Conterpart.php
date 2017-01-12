@@ -44,9 +44,11 @@ class Conterpart
    *
    * Inverse Side
    *
-   * @ORM\ManyToMany(targetEntity="User", mappedBy="conterparts", cascade={"persist", "merge"})
+   * @ORM\ManyToOne(targetEntity="Project", inversedBy="conterparts")
+   * @ORM\JoinColumn(name="project_id", referencedColumnName="id")
+
    */
-  private $projects;
+  private $project;
 
   /**
    * @ORM\OneToMany(targetEntity="Invest", mappedBy="conterpart", cascade={"ALL"})
@@ -58,40 +60,15 @@ class Conterpart
    * @param $name
    * @param $description
    * @param $value
+   * @param Project $project
    */
-  public function __construct($name, $description, $value)
+  public function __construct($name, $description, $value, Project $project)
   {
     $this->name = $name;
     $this->description = $description;
+    $this->project = $project;
     $this->value = $value;
-    $this->projects = new ArrayCollection();
     $this->investments= new ArrayCollection();
-  }
-
-  /**
-   * Add Client
-   *
-   * @param Project $project
-   */
-  public function addProject(Project $project)
-  {
-    // Si l'objet fait déjà partie de la collection on ne l'ajoute pas
-    if (!$this->projects->contains($project)) {
-      if (!$project->getConterparts()->contains($this)) {
-        $project->addConterpart($this);  // Lie le Client au produit.
-      }
-      $this->projects->add($project);
-    }
-  }
-
-  /**
-   * Get ArrayCollection
-   *
-   * @return ArrayCollection $clients
-   */
-  public function getClients()
-  {
-    return $this->projects;
   }
 
   /**
@@ -173,4 +150,22 @@ class Conterpart
   {
     $this->investments = $investments;
   }
+
+  /**
+   * @return ArrayCollection
+   */
+  public function getProject()
+  {
+    return $this->project;
+  }
+
+  /**
+   * @param ArrayCollection $project
+   */
+  public function setProject($project)
+  {
+    $this->project = $project;
+  }
+
+
 }

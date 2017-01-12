@@ -48,18 +48,14 @@ class Project
 
   /**
    * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
+   * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
    */
   protected $owner;
 
   /**
    * @var ArrayCollection Conterpart $conterparts
-   * Owning Side
    *
-   * @ORM\ManyToMany(targetEntity="Conterpart", inversedBy="projects", cascade={"persist", "merge"})
-   * @ORM\JoinTable(name="ConterpartsProject",
-   *   joinColumns={@ORM\JoinColumn(name="Project_idProject", referencedColumnName="id")},
-   *   inverseJoinColumns={@ORM\JoinColumn(name="Conterpart_idConterpart", referencedColumnName="id")}
-   * )
+   * @ORM\OneToMany(targetEntity="Conterpart", mappedBy="projects", cascade={"persist", "merge"})
    */
   private $conterparts;
 

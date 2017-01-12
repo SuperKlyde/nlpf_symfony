@@ -1,7 +1,7 @@
 # This file is auto-generated during the composer install
 parameters:
     database_host: 127.0.0.1
-    database_port: null
+    database_port: 8889
     database_name: symfony
     database_user: root
     database_password: root
@@ -10,4 +10,3 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: 936a84b5232b9e2fe84b4d1c89b1400169d38d90
-    database_path: '%kernel.root_dir%/sqlite.db'

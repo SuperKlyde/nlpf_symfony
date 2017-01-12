@@ -48,23 +48,31 @@ class InvestController extends Controller
 
   /**
    * @Rest\View()
-   * @Rest\Post("/investonproject")
+   * @Rest\Post("/api/investonproject")
    */
   public function investInProject(Request $request) {
+    $projectId = str_replace("\"", "", $request->get('projectId'));
+    $conterpartId = str_replace("\"", "", $request->get('conterpartId'));
+    $investorId = str_replace("\"", "", $request->get('investorId'));
+
     $project = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:Project')
-      ->find($request->get('projectId'));
+      ->find($projectId);
     $conterpart = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:Conterpart')
-      ->find($request->get('conterpartId'));
+      ->find($conterpartId);
     $investor = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:User')
-      ->find($request->get('investorId'));
+      ->find($investorId);
 
     $invest = new Invest($investor, $project, $conterpart);
 
     $em = $this->get('doctrine.orm.entity_manager');
     $em->persist($invest);
+    $em->flush();
+
+    $project->setCurrent($project->getCurrent() + $conterpart->getValue());
+    $em->persist($project);
     $em->flush();
 
     return new JsonResponse("true", Response::HTTP_ACCEPTED);

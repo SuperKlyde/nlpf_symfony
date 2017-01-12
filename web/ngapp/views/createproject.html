@@ -56,4 +56,49 @@
         </form>
 
     </div>
+    <div class="col-md-6 portfolio-item">
+        <form class = "form-signin" name="counterpartForm" novalidate>
+
+            <label>Titre</label>
+            <input type = "text" class = "form-control" name = "counterpartName" placeholder = "Nom de la contrepartie"
+                   ng-model="counterpart.name" required="required" min="1" required autofocus>
+            <span style="color:red" ng-show="counterpartForm.counterpartName.$dirty && counterpartForm.counterpartName.$invalid">
+                <span ng-show="counterpartForm.counterpartName.$error.required">Le titre de la contrepartie est requise.</span>
+            </span>
+
+            <br>
+
+            <label>Valeur (en € / mois)</label>
+            <input type = "number" class = "form-control" name = "counterpartAmount" placeholder = "Montant"
+                   ng-model="counterpart.value" ng-min="1" required="required" ng-min="1" required autofocus>
+            <span style="color:red" ng-show="counterpartForm.counterpartAmount.$dirty && counterpartForm.counterpartAmount.$invalid">
+                <span ng-show="counterpartForm.counterpartAmount.$error.required">Le montant de la contrepartie est requis.</span>
+                <span ng-show="counterpartForm.counterpartAmount.$error.min">Le montant de la contrepartie doit être supérieur à 1 !</span>
+                <span ng-show="counterpartForm.counterpartAmount.$error.number">Le valeur doit  être un nombre !</span>
+            </span>
+
+            <br>
+            <label>Description</label>
+            <textarea class = "form-control" name = "counterpartDescription" rows="3" placeholder = "Description"
+                      ng-model="counterpart.description" required="required" min="1" required autofocus></textarea>
+            <span style="color:red" ng-show="counterpartForm.counterpartDescription.$dirty && counterpartForm.counterpartDescription.$invalid">
+                <span ng-show="counterpartForm.counterpartDescription.$error.required">La description du projet est requise.</span>
+            </span>
+            <br>
+            <button class = "btn btn-lg btn-primary btn-block" ng-click="addCounterpart(counterpart)"
+                    ng-disabled="counterpartForm.counterpartName.$dirty && projectForm.counterpartName.$invalid ||
+                        counterpartForm.counterpartDescription.$dirty && projectForm.counterpartDescription.$invalid ||
+                        counterpartForm.counterpartAmount.$dirty && projectForm.counterpartAmount.$invalid ||
+                        !counterpart.name  || !counterpart.description || !counterpart.value"
+                    name = "counterpartsAdd">Ajouter la contrepartie</button>
+        </form>
+        <br>
+        <div ng-repeat="item in counterpartsList | orderBy:'value'">
+            <div class="itemDisplay">
+                <h4><strong> {{item.name}} - {{item.value}} € / mois</strong></h4>
+                <p>{{item.description}}</p>
+            </div>
+        </div>
+    </div>
+
 </div>

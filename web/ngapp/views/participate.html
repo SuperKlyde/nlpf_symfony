@@ -1,0 +1,25 @@
+<!-- Page Header -->
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">I participate !</h1>
+    </div>
+</div>
+<!-- /.row -->
+
+<div class="row">
+    <div class="col-lg-12 alert alert-danger form-control errorMessage" ng-show="participateError"> {{ participateErrorMessage }}</div>
+</div>
+
+<!-- Page Content -->
+<div class="col-lg-12 portfolio-item itemDisplay">
+    <p>You confirm your investment of {{item.value}} euro(s) per month for the project {{project.name}} of {{project.author}}</p>
+</div>
+
+<div class="col-md-4 itemDisplay">
+    <h4><strong> {{item.name}} - {{item.value}} € / mois</strong></h4>
+    <p>{{item.description}}</p>
+    <div class="rightText">
+        <button class="btn btn-primary whiteText rightText" type="button" ng-click="participateTo(item.id)">J'accepte</button>
+    </div>
+</div>
+<!-- /.row -->
