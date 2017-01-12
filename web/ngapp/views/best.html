@@ -17,10 +17,10 @@
             </a>
         </div>
         <div class="col-lg-12 margeTop">
-            <p>Gain : {{ project.current }} € / month</p>
+            <p>Profit : {{ project.current }} € / month</p>
         </div>
         <div class="col-lg-12">
-            <p>Créé le : {{ project.created.date | date : 'longDate' }}</p>
+            <p>Creation date : {{ project.created.date | date : 'longDate' }}</p>
         </div>
         <div class="rightText">
             <a ng-href="#/project/{{ project.id }}" class="whiteText rightText">
