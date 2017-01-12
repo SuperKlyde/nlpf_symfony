@@ -48,20 +48,54 @@ class ConterpartController extends Controller
   }
 
   /**
+   * @Rest\Get("/api/conterpart/{id}", name="_projects")
+   */
+  public function getProjectAction(Request $request)
+  {
+    $conterpart = $this->get('doctrine.orm.entity_manager')
+      ->getRepository('AppBundle:Conterpart')
+      ->find($request->get('id'));
+    /* @var $project Project */
+
+    if (empty($conterpart)) {
+      return new JsonResponse(null, Response::HTTP_NOT_MODIFIED);
+    }
+
+    $formatted = [
+        'id' => $conterpart->getId(),
+        'name' => $conterpart->getName(),
+        'description' => $conterpart->getDescription(),
+        'value' => $conterpart->getValue(),
+    ];
+
+    return new JsonResponse(['message' => $formatted]);
+  }
+
+  /**
    * @Rest\View()
-   * @Rest\Post("/conterpart/create")
+   * @Rest\Post("/api/conterpart/create")
    */
   public function createConterpart(Request $request) {
-    $name = $request->get("name");
-    $description = $request->get("description");
-    $value = $request->get("value");
+    $name = str_replace("\"", "", $request->get('name'));
+    $description = str_replace("\"", "", $request->get('description'));
+    $value = str_replace("\"", "", $request->get('value'));
+    $projectId = str_replace("\"", "", $request->get('projectId'));
 
-    $conterpart = new Conterpart($name, $description, $value);
+    $project = $this->get('doctrine.orm.entity_manager')
+      ->getRepository('AppBundle:Project')
+      ->find($projectId);
+
+    $conterpart = new Conterpart($name, $description, $value, $project);
 
     $em = $this->get('doctrine.orm.entity_manager');
     $em->persist($conterpart);
     $em->flush();
-
-    return $conterpart;
+    $formatted = [
+      'id' => $conterpart->getId(),
+      'name' => $conterpart->getName(),
+      'description' => $conterpart->getDescription(),
+      'value' => $conterpart->getValue(),
+    ];
+    return new JsonResponse(['message' => $formatted], Response::HTTP_ACCEPTED);
   }
 }

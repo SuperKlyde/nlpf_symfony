@@ -45,7 +45,7 @@ class User
     protected $email;
 
     /**
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="owner", cascade={"ALL"})
+     * @ORM\OneToMany(targetEntity="Project", mappedBy="owner")
      */
     protected $projects;
 
@@ -67,7 +67,7 @@ class User
     $this->lastname = $lastname;
     $this->password = $password;
     $this->email = $email;
-    $this->investments = new ArrayCollection();
+    $this->investments =  new ArrayCollection();
     $this->projects = new ArrayCollection();
   }
 

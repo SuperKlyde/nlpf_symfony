@@ -46,11 +46,10 @@ App.controller("SessionController", function($scope, $http, $location, $route) {
             };
 
             $http(req).success(function(account){
-                console.log(account);
-                console.log(typeof(account));
+                console.log(account.message);
                 $scope.loginSucessMessage = "Logged";
                 if (account.message !== undefined) {
-                    window.localStorage.setItem("user", JSON.stringify(account));
+                    window.localStorage.setItem("user", JSON.stringify(account.message));
                     $scope.userConnected = {connected: window.localStorage.getItem("user") !== null ? true : false};
                     $scope.notConnected = {connected: !$scope.userConnected.connected};
                     window.location.href = "#/";
@@ -96,7 +95,7 @@ App.controller("SessionController", function($scope, $http, $location, $route) {
             };
             $http(req).success(function (account) {
                 if (account.message !== undefined) {
-                    window.localStorage.setItem("user", JSON.stringify(account));
+                    window.localStorage.setItem("user", JSON.stringify(account.message));
                     $scope.userConnected = {connected: window.localStorage.getItem("user") !== null ? true : false};
                     $scope.notConnected = {connected: !$scope.userConnected.connected};
                     window.location.href = "#/";

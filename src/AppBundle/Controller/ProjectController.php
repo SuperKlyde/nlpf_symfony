@@ -22,6 +22,7 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View;
+use Doctrine\ORM\EntityManager;
 
 class ProjectController extends Controller
 {
@@ -41,6 +42,7 @@ class ProjectController extends Controller
       $formatted[] = [
         'id' => $project->getId(),
         'name' => $project->getName(),
+        'description' => $project->getDescription(),
         'owner' => $project->getOwner(),
         'created' => $project->getCreated(),
         'conterparts' => $project->getConterparts(),
@@ -53,7 +55,7 @@ class ProjectController extends Controller
 
 
   /**
-   * @Rest\Get("/projects/{id}", name="_projects")
+   * @Rest\Get("/api/projects/{id}", name="_projects")
    */
   public function getProjectAction(Request $request)
   {
@@ -63,43 +65,44 @@ class ProjectController extends Controller
     /* @var $project Project */
 
     if (empty($project)) {
-      return new JsonResponse(['message' => 'Project not found'], Response::HTTP_NOT_FOUND);
+      return new JsonResponse(null, Response::HTTP_NOT_MODIFIED);
     }
 
     $formatted = [
       'id' => $project->getId(),
       'name' => $project->getName(),
+      'description' => $project->getDescription(),
       'owner' => $project->getOwner(),
       'created' => $project->getCreated(),
       'conterparts' => $project->getConterparts(),
+      'current' => $project->getCurrent(),
     ];
 
 
-    return new JsonResponse($formatted);
+    return new JsonResponse(['message' => $formatted]);
   }
 
-  /**
-   * @Rest\Get("/project/{name}")
+   /**
+   * @Rest\Get("/api/projectowner/{id}")
    */
-  public function getProjectName(Request $request)
+  public function getProjectOwner(Request $request)
   {
-    $projects = $this->get('doctrine.orm.entity_manager')
-      ->getRepository('AppBundle:Project')
-      ->findByName($request->get('name'));
-    /* @var $projects Project */
-
-    if (empty($projects)) {
-      return new JsonResponse(['message' => 'Project not found'], Response::HTTP_NOT_FOUND);
-    }
+    $em = $this->get('doctrine.orm.entity_manager');
+    $repository = $em->getRepository('AppBundle:User');
+    $query = $repository->createQueryBuilder('u')
+      ->innerJoin('u.project', 'g')
+      ->where('g.id = :group_id')
+      ->setParameter('group_id', $request->get('id'))
+      ->getQuery()->getResult();
 
     $formatted = [];
-    foreach ($projects as $project) {
+    foreach ($query as $user) {
       $formatted[] = [
-        'id' => $project->getId(),
-        'name' => $project->getName(),
-        'owner' => $project->getOwner(),
-        'created' => $project->getCreated(),
-        'conterparts' => $project->getConterparts(),
+        'id' => $user->getId(),
+        'firstname' => $user->getFirstname(),
+        'lastname' => $user->getLastname(),
+        'email' => $user->getEmail(),
+        'password' => $user->getPassword(),
       ];
     }
 
@@ -107,14 +110,69 @@ class ProjectController extends Controller
   }
 
   /**
-   * @Rest\Post("api/project/create")
+   * @Rest\Get("/api/projectcontributors/{id}")
+   */
+  public function getProjectContributors(Request $request)
+  {
+    $em = $this->get('doctrine.orm.entity_manager');
+    $repository = $em->getRepository('AppBundle:User');
+    $query = $repository->createQueryBuilder('u')
+      ->innerJoin('u.investments', 'g')
+      ->innerJoin('g.project', 'p')
+      ->where('p.id = :group_id')
+      ->setParameter('group_id', $request->get('id'))
+      ->getQuery()->getResult();
+
+    $formatted = [];
+    foreach ($query as $user) {
+      $formatted[] = [
+        'id' => $user->getId(),
+        'firstname' => $user->getFirstname(),
+        'lastname' => $user->getLastname(),
+        'email' => $user->getEmail(),
+        'password' => $user->getPassword(),
+      ];
+    }
+
+    return new JsonResponse(["message" => $formatted]);
+  }
+
+  /**
+   * @Rest\Get("/api/projectconterparts/{id}")
+   */
+  public function getProjectConterparts(Request $request)
+  {
+    $em = $this->get('doctrine.orm.entity_manager');
+    $repository = $em->getRepository('AppBundle:Conterpart');
+    $query = $repository->createQueryBuilder('u')
+      ->innerJoin('u.project', 'g')
+      ->where('g.id = :group_id')
+      ->setParameter('group_id', $request->get('id'))
+      ->getQuery()->getResult();
+
+    $formatted = [];
+    foreach ($query as $conterpart) {
+      $formatted[] = [
+        'id' => $conterpart->getId(),
+        'name' => $conterpart->getName(),
+        'description' => $conterpart->getDescription(),
+        'value' => $conterpart->getValue(),
+      ];
+    }
+
+    return new JsonResponse(["message" => $formatted]);
+  }
+
+  /**
+   * @Rest\Post("/api/project/create")
    */
   public function createProject(Request $request) {
-    $name = $request->get('name');
-    $description = $request->get('description');
+    $name = str_replace("\"", "", $request->get('name'));
+    $description = str_replace("\"", "", $request->get('description'));
+    $userId = str_replace("\"", "", $request->get('userId'));
     $user = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:User')
-      ->find($request->get('userid'));
+      ->find($userId);
 
     $project = new Project($user, $name, $description);
 
@@ -130,30 +188,34 @@ class ProjectController extends Controller
       'conterparts' => $project->getConterparts(),
     ];
 
-    return new JsonResponse($formatted);
+    return new JsonResponse(['message' => $formatted]);
   }
 
   /**
    * @Rest\View()
-   * @Rest\Post("/project/addconterpart")
+   * @Rest\Post("/api/project/addconterpart")
    */
   public function AddConterpartToProject(Request $request) {
+    $projectId = str_replace("\"", "", $request->get('projectId'));
+
     $project = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:Project')
-      ->find($request->get('projectId'));
+      ->find($projectId);
     /* @var $project Project */
 
     if (empty($project)) {
-      return new JsonResponse(['message' => 'Project not found'], Response::HTTP_NOT_FOUND);
+      return new JsonResponse(null, Response::HTTP_NOT_MODIFIED);
     }
+
+    $conterpartId = str_replace("\"", "", $request->get('conterpartId'));
 
     $conterpart = $this->get('doctrine.orm.entity_manager')
       ->getRepository('AppBundle:Conterpart')
-      ->find($request->get('conterpartId'));
+      ->find($conterpartId);
     /* @var $conterpart Conterpart */
 
     if (empty($conterpart)) {
-      return new JsonResponse(['message' => 'Conterpart not found'], Response::HTTP_NOT_FOUND);
+      return new JsonResponse(null, Response::HTTP_NOT_MODIFIED);
     }
 
     $project->addConterpart($conterpart);
@@ -162,6 +224,6 @@ class ProjectController extends Controller
     $em->persist($project);
     $em->flush();
 
-    return new JsonResponse("true", Response::HTTP_ACCEPTED);
+    return new JsonResponse(['message' => "true"], Response::HTTP_ACCEPTED);
   }
 }

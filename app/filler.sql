@@ -12,15 +12,15 @@ VALUES ('projet 1', 'description 1', 140, '2015-03-01' ,1),
   ('projet raté', 'too bad...', 12, '2015-03-05' , 4),
   ('projet normale', 'un projet normal', 500, '2015-03-06' , 4);
 
-INSERT INTO CONTERPART (NAME, DESCRIPTION, VALUE)
- VALUES ('casquette', 'une casquette renault', 15),
-('t-shirt', 'un t-shirt EPITA', 20),
-('téléphone', 'un téléphone', 150),
-('livre', 'un livre', 15),
-('chaise', 'une chaise', 30),
-('armoire', 'une armoire', 100),
-('tracteur', 'wtf?', 1500),
-('hérisson', 'tout mignon', 25);
+INSERT INTO CONTERPART (NAME, DESCRIPTION, VALUE, PROJECTS_ID)
+ VALUES ('casquette', 'une casquette renault', 15, 1),
+('t-shirt', 'un t-shirt EPITA', 20, 1),
+('téléphone', 'un téléphone', 150, 2),
+('livre', 'un livre', 15, 2),
+('chaise', 'une chaise', 30, 3),
+('armoire', 'une armoire', 100, 3),
+('tracteur', 'wtf?', 1500, 3),
+('hérisson', 'tout mignon', 25, 2);
 
 INSERT INTO INVEST (investor_id, PROJECT_ID, CONTERPART_ID)
 VALUES (1, 1, 1),

@@ -40,6 +40,8 @@ class UserController extends Controller
         'firstname' => $user->getFirstname(),
         'lastname' => $user->getLastname(),
         'email' => $user->getEmail(),
+        'projects' => $user->getProjects(),
+
       ];
     }
 
@@ -91,7 +93,13 @@ class UserController extends Controller
     $em->persist($user);
     $em->flush();
 
-    return new JsonResponse(['message' => $user]);
+    $formatted = [
+      'id' => $user->getId(),
+      'firstname' => $user->getFirstname(),
+      'lastname' => $user->getLastname(),
+      'email' => $user->getEmail(),
+    ];
+    return new JsonResponse(['message' => $formatted]);
   }
 
   /**
