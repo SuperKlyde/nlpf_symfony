@@ -23,13 +23,13 @@
             FirstName: <input type = "text" class = "form-control" name = "firstname" placeholder = "Firstname"
                               ng-model="user.firstname" required="required" min="1" required autofocus>
             <span style="color:red" ng-show="form.firstname.$dirty && form.firstname.$invalid">
-                <span ng-show="form.firstname.$error.required">Le prénom est requis.</span>
+                <span ng-show="form.firstname.$error.required">Fisrt name required.</span>
             </span>
             <br />
             LastName:  <input type = "text" class = "form-control" name = "lastname" placeholder = "Lastname"
                               ng-model="user.lastname" required="required" min="1" required autofocus>
             <span style="color:red" ng-show="form.lastname.$dirty && form.lastname.$invalid">
-                <span ng-show="form.lastname.$error.required">Le nom est requis.</span>
+                <span ng-show="form.lastname.$error.required">Last name required.</span>
             </span>
             <br />
             Email:  <input type = "email" class = "form-control" name = "email" placeholder = "email"
